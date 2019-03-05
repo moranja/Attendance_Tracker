@@ -20,12 +20,7 @@ $student.check_attendance
 take you back to original menu
 =end
 
-<<<<<<< HEAD
-=======
 $student.sign_in
-
-
->>>>>>> 5ce6564ea9cf3384a07ec7357f2fb97b27b43781
 puts "Hello #{$student.full_name} the time is: #{Attendance.last.arrival_time.to_time.strftime("%H:%M")}"
 
 $student.check_my_attendance
