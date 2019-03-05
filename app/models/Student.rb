@@ -32,8 +32,8 @@ class Student < ActiveRecord::Base
   end
 
   def self.who_is_late
-    binding.pry 
-    self.all.select {|student| student.attendances.last.minutes_early < 0}  
+    binding.pry
+    self.all.select {|student| student.attendances.last.minutes_early < 0}
   end
 
   def change_arrival_time(string)
