@@ -31,7 +31,7 @@ cli.choose do |menu|
   menu.choice(:attendance) {cli.say("Here is the attendance record for your class: #{Attendance.all}")}
   menu.choice(:student_attendance) {cli.say("Here is your attendance record: #{$student.attendance}")}
 end
-
+#retardsa
 
 Pry.start
 
