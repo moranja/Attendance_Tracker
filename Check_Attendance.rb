@@ -7,7 +7,6 @@ cli = HighLine.new
 
 #$today = School_Day.find_or_create_by(date: $todays_date)
 
-
 $student = Student.find_by!(pin_number: (cli.ask "Welcome back to Flation! Please enter your PIN number: "))
 
 =begin
@@ -22,6 +21,7 @@ take you back to original menu
 =end
 
 $student.sign_in
+$student.check_my_attendance
 
 puts "Hello #{$student.full_name} the time is: #{Attendance.last.arrival_time.to_time.strftime("%H:%M")}"
 
