@@ -4,13 +4,16 @@ cli = HighLine.new
 #input = cli.ask "Enter Your PIN number"
 
 $todays_date = DateTime.now.to_date.to_s
-#result = Student.find_by!(pin_number: (cli.ask "Enter Your PIN number"))
 
 $today = School_Day.find_or_create_by(date: $todays_date)
 
+$student = Student.find_by!(pin_number: (cli.ask "Enter Your PIN number"))
 
+#binding.pry
 
+$student.sign_in
 
+#Attendance.new(student: $student, school_day: School_Day.last, arrival_time: DateTime.now, manually_changed: false)
 
 
 
