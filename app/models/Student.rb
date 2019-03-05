@@ -31,9 +31,9 @@ class Student < ActiveRecord::Base
     end
   end
 
-  def self.is_late
+  def self.who_is_late
     binding.pry 
-    self.all.select {|student| student.attendances.minutes_early < 0}  
+    self.all.select {|student| student.attendances.last.minutes_early < 0}  
   end
 
 end
