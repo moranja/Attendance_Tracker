@@ -1,4 +1,4 @@
 class Attendance < ActiveRecord::Base
- belongs_to :students
- belongs_to :school_days
+ belongs_to :student
+ belongs_to :school_day
 end

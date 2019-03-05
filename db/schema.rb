@@ -13,10 +13,12 @@
 ActiveRecord::Schema.define(version: 20190304191738) do
 
   create_table "attendances", force: :cascade do |t|
-    t.integer  "user_id"
+    t.integer  "student_id"
     t.integer  "school_day_id"
     t.datetime "arrival_time"
     t.boolean  "manually_changed"
+    t.index ["school_day_id"], name: "index_attendances_on_school_day_id"
+    t.index ["student_id"], name: "index_attendances_on_student_id"
   end
 
   create_table "school_days", force: :cascade do |t|

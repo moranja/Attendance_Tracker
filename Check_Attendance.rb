@@ -1,18 +1,15 @@
-require_relative '../config/environment.rb'
+require_relative 'config/environment.rb'
 
-class Testing
 cli = HighLine.new
 #input = cli.ask "Enter Your PIN number"
 
-todays_date = DateTime.now.to_date.to_s
+$todays_date = DateTime.now.to_date.to_s
 #result = Student.find_by!(pin_number: (cli.ask "Enter Your PIN number"))
 
-today = SchoolDay.find_or_create_by(date: DateTime.now.to_date.to_s)
+$today = School_Day.find_or_create_by(date: $todays_date)
 
 
 
-
-test22 = 0
 
 
 
@@ -21,7 +18,6 @@ test22 = 0
 
 Pry.start
 
-end
 
 
 
