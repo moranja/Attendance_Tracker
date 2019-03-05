@@ -26,6 +26,15 @@ puts "Hello #{$student.full_name} the time is: #{Attendance.last.arrival_time.to
 
 $student.check_my_attendance
 
+
+HighLine::Menu.index_color = :rgb_999999
+cli.choose do |menu|
+  menu.prompt = "What would you like to do?"
+  menu.choice(:attendance) {cli.say("Here is the attendance record for your class: #{Attendance.all}")}
+  menu.choice(:student_attendance) {cli.say("Here is your attendance record: #{$student.attendance}")}
+end
+
+
 Pry.start
 
 
