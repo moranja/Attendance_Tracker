@@ -36,4 +36,16 @@ class Student < ActiveRecord::Base
     self.all.select {|student| student.attendances.last.minutes_early < 0}  
   end
 
+  def change_arrival_time(string)
+    date_array = string.split("-")
+    today = School_Day.last
+    
+    binding.pry
+    new_arrival_time = DateTime.new(today.date.year,today.date.month,today.date.day,date_array[0].to_i,date_array[1].to_i,0)
+    todays_attendance = self.attendances.last
+    todays_attendance.arrival_time = new_arrival_time
+    todays_attendance.manually_changed = true
+  end
+
+
 end
