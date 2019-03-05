@@ -7,23 +7,27 @@ def make_the_current_day
 end
 
 def ask_the_student_to_log_in
-  $student = Student.find_by!(pin_number: (@cli.ask "Welcome back to Flation! Please enter your PIN number: "))
+  result = Student.find_by(pin_number: (@cli.ask "Welcome back to Flation! Please enter your PIN number: "))
+  while result == nil
+    result = Student.find_by(pin_number: (@cli.ask "No Student found with that pin number, please enter your pin number: "))
+  end
+  result
 end
 
-def greet_student
-  puts "Hello #{$student.full_name}, the time is: #{Attendance.last.arrival_time.to_time.strftime("%H:%M")}"
+def greet_student(student)
+  puts "Hello #{student.full_name}, the time is: #{Attendance.last.arrival_time.to_time.strftime("%H:%M")}"
 end
 
-def start_menu
+def start_menu(student)
   HighLine::Menu.index_color = :rgb_999999
   @cli.choose do |menu|
     menu.prompt = "What would you like to do?"
-    menu.choice("Log attendance for today") {$student.sign_in}
-    menu.choice("Change arrival time for today") #$student.change_arrival_time
+    menu.choice("Log attendance for today") {student.sign_in}
+    menu.choice("Change arrival time for today") {student.change_arrival_time(@cli.ask "Please enter the time you arrived (in format HH-MM):")}
     menu.choice("Check my attendance") {@cli.say("Here is your attendance record: #{$student.check_my_attendance}")}
     menu.choice("See attendance of whole class") {@cli.say("Here is the attendance record for your class: #{Attendance.all}")}
     menu.choice("See who's late today") {@cli.say("Here is who was late today: #{Student.who_is_late}")}
-    menu.choice("Exit") {break}
+    menu.choice("Exit") {return "Exit"}
   end
 end
 
@@ -32,12 +36,13 @@ end
 ############################################
 
 make_the_current_day
-ask_the_student_to_log_in
-greet_student
-while 1!=0
-  start_menu
-end
+current_student = ask_the_student_to_log_in
+greet_student(current_student)
 
+return_value = ''
+while return_value != "Exit"
+  return_value = start_menu(current_student)
+end
 
 
 
