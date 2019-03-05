@@ -26,6 +26,10 @@ def start_menu
   end
 end
 
+############################################
+#### Start the real program here ###########
+############################################
+
 make_the_current_day
 ask_the_student_to_log_in
 greet_student
