@@ -21,11 +21,7 @@ take you back to original menu
 =end
 
 $student.sign_in
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 7a29f56b22ee6c86de2fd5a8976f93e4b070d4cd
 puts "Hello #{$student.full_name} the time is: #{Attendance.last.arrival_time.to_time.strftime("%H:%M")}"
 
 $student.check_my_attendance
