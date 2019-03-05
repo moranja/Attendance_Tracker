@@ -5,6 +5,7 @@ class CreateAttendances < ActiveRecord::Migration[5.0]
       t.belongs_to :school_day
       t.datetime :arrival_time
       t.boolean :manually_changed
+      t.integer :minutes_early
     end
   end
 end
