@@ -1,15 +1,31 @@
-# require 'highline'
-# require 'csv'
-# require 'pry'
+require_relative '../config/environment.rb'
 
-class Client < ActiveRecord::Base
+class Testing
 cli = HighLine.new
 #input = cli.ask "Enter Your PIN number"
-result = Student.find_by!(pin_number: (cli.ask "Enter Your PIN number"))
-binding.pry
 
-0
+todays_date = DateTime.now.to_date.to_s
+#result = Student.find_by!(pin_number: (cli.ask "Enter Your PIN number"))
+
+today = SchoolDay.find_or_create_by(date: DateTime.now.to_date.to_s)
+
+
+
+
+test22 = 0
+
+
+
+
+
+
+Pry.start
+
 end
+
+
+
+
 =begin
 x = []
 CSV.foreach("../csv/studentdb.csv") do |row|
