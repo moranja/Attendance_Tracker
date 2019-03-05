@@ -22,6 +22,7 @@ def start_menu
     menu.choice("Change arrival time for today") #$student.change_arrival_time
     menu.choice("Check my attendance") {@cli.say("Here is your attendance record: #{$student.check_my_attendance}")}
     menu.choice("See attendance of whole class") {@cli.say("Here is the attendance record for your class: #{Attendance.all}")}
+    menu.choice("See who's late today") {@cli.say("Here is who was late today: #{Student.who_is_late}")}
     menu.choice("Exit") {break}
   end
 end
