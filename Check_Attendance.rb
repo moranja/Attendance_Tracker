@@ -3,10 +3,9 @@ require_relative 'config/environment.rb'
 cli = HighLine.new
 #input = cli.ask "Enter Your PIN number"
 
-#$todays_date = DateTime.now.to_date.to_s
+$todays_date = DateTime.now.to_date.to_s
 
-#$today = School_Day.find_or_create_by(date: $todays_date)
-
+$today = School_Day.find_or_create_by(date: DateTime.now)
 
 $student = Student.find_by!(pin_number: (cli.ask "Welcome back to Flation! Please enter your PIN number: "))
 $student.sign_in
@@ -21,8 +20,15 @@ $student.check_attendance
 take you back to original menu
 =end
 
+<<<<<<< HEAD
+=======
+$student.sign_in
+
+
+>>>>>>> 5ce6564ea9cf3384a07ec7357f2fb97b27b43781
 puts "Hello #{$student.full_name} the time is: #{Attendance.last.arrival_time.to_time.strftime("%H:%M")}"
 
+$student.check_my_attendance
 
 HighLine::Menu.index_color = :rgb_999999
 cli.choose do |menu|
