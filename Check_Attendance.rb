@@ -46,6 +46,8 @@ def teacher_menu(student)
     menu.choice("Add a student") {clear_logs && Student.create_student(@cli.ask "Enter full name and pin_number of student to be created (in format 'Adam Moran, 12345678'):")}
     menu.choice("Add a teacher") {clear_logs && Student.create_teacher(@cli.ask "Enter full name and pin_number of teacher to be created (in format 'Joshua Miles, 12345678'):")}
     menu.choice("Remove a student") {clear_logs && Student.delete_student(@cli.ask "Enter full name of student to be deleted:")}
+    menu.choice("Remove a teacher") {clear_logs && student.delete_teacher(@cli.ask "Enter full name of student to be deleted:")}
+    menu.choice("Change my pin number") {clear_logs && student.change_pin_number(@cli.ask "Enter an eight digit number:")}
     menu.choice("Exit") {return "Exit"}
   end
 end

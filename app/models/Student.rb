@@ -67,9 +67,24 @@ class Student < ActiveRecord::Base
 
   def self.delete_student(student_name)
     castaway = Student.find_by full_name: student_name
-    castaway.delete
-    puts "Deleted Student: #{student_name}"
-    return "Teacher"
+    if castaway.is_teacher == true
+      puts "That's not a student, that's a teacher!"
+    else
+      castaway.delete
+      puts "Deleted Student: #{student_name}"
+    end
+  end
+
+  def delete_teacher(student_name)
+    castaway = Student.find_by full_name: student_name
+    if castaway.is_teacher == false
+      puts "That's not a teacher, that's a student!"
+    elsif castaway = self
+      puts "You can't delete yourself!"
+    else
+      castaway.delete
+      puts "Deleted Teacher: #{student_name}"
+    end
   end
 
   def check_if_teacher
@@ -90,6 +105,17 @@ class Student < ActiveRecord::Base
     deets_array = deets.split(', ')
     Student.create(full_name: deets_array[0], pin_number: deets_array[1].to_i, is_teacher: true)
   end
+
+  def change_pin_number(int_in_a_string)
+    if int_in_a_string.to_i.digits.count != 8
+      puts "The new pin number was not an 8 digit number, please try again!"
+    else
+      puts "Your pin number has been changed to #{int_in_a_string.to_i}"
+      self.pin_number = int_in_a_string.to_i
+      self.save
+    end
+  end
+
 
 
 end
