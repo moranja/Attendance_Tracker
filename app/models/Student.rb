@@ -60,5 +60,9 @@ class Student < ActiveRecord::Base
     puts "Deleted Student: #{student_name}" 
   end
 
+  def self.create_student(full_name, pin_number, is_teacher)
+    Student.create(full_name: full_name, pin_number: pin_number.to_i, is_teacher: false)
+  end
+
 
 end
