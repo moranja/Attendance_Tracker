@@ -13,5 +13,6 @@ School_Day.create(date: DateTime.new(2019,3,4,15,0,0).to_date.to_s)
 #Attendance.create(student: Student.find_by(full_name: 'Adam Moran'), school_day_id: School_Day.last.id, arrival_time: DateTime.new(2019,3,4,15,0,0), minutes_early: 0)
 
 Student.all.each do |student|
-  Attendance.create(student: student, school_day_id: School_Day.last.id, arrival_time: DateTime.new(2019,3,4,14,45,0), manually_changed: false, minutes_early: 15)
+  new_a = Attendance.create(student: student, school_day_id: School_Day.last.id, arrival_time: DateTime.new(2019,3,4,8,45,0).in_time_zone("Central Time (US & Canada)"), manually_changed: false)
+  new_a.is_early_or_late
 end
