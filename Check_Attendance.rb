@@ -19,7 +19,7 @@ def ask_the_student_to_log_in
 end
 
 def greet_student(student)
-  puts "Hello #{student.full_name}, the time is: #{Attendance.last.arrival_time.to_time.strftime("%H:%M")}"
+  puts "Hello #{student.full_name}, the time is: #{DateTime.now.in_time_zone("Central Time (US & Canada)").to_time.strftime("%H:%M")}"
 end
 
 def start_menu(student)
@@ -28,7 +28,7 @@ def start_menu(student)
     menu.prompt = "What would you like to do?"
     menu.choice("Log attendance for today") {clear_logs && student.sign_in}
     menu.choice("Change arrival time for today") {clear_logs && student.change_arrival_time(@cli.ask "Please enter the time you arrived (in format HH-MM):")}
-    menu.choice("Check my attendance") {clear_logs && @cli.say("Here is your attendance record: #{student.check_my_attendance}")}
+    menu.choice("Check my attendance") {clear_logs && student.check_my_attendance(@cli.ask "How many days would you like to see?")}
     menu.choice("See attendance of whole class") {clear_logs && @cli.say("Here is the attendance record for your class: #{Attendance.all}")}
     menu.choice("See who's late today") {clear_logs && @cli.say("Here is who was late today: #{Student.who_is_late}")}
     menu.choice("Exit") {return "Exit"}
@@ -52,7 +52,7 @@ end
 
 
 
-Pry.start
+#Pry.start
 
 
 
