@@ -3,9 +3,9 @@ class Student < ActiveRecord::Base
   has_many :school_days, through: :attendances
 
   def sign_in
-    if self.attendances.last.arrival_time.to_date == DateTime.now.to_date || nil
+    if self.attendances.last.is_current_day || nil
       puts "You've already logged your attendance today!"
-    else self.attendances.last.arrival_time.to_date == DateTime.now.to_date
+    else
       todays_attendance = Attendance.create(student: self,  school_day_id: School_Day.last.id, manually_changed: false, arrival_time: DateTime.now.in_time_zone("Central Time (US & Canada)"))
       todays_attendance.is_early_or_late
     end
@@ -30,17 +30,24 @@ class Student < ActiveRecord::Base
   end
 
   def self.who_is_late
-    late_students = self.all.select do |student|
-      if student.attendances.last != nil
-        student.attendances.last.seconds_early < 0
+    absent_students = []
+    late_students = []
+    self.all.each do |student|
+      if student.attendances.last.is_current_day != true && student.is_teacher == false
+        absent_students << student.full_name
+      elsif student.attendances.last.seconds_early < 0 && student.is_teacher == false
+        late_students << student.full_name
       end
     end
-    if late_students == nil
-      puts "Everyone was on time today!"
-    else
-      late_student_array = late_students.map {|student| student.full_name}
+
+    if late_students == [] && absent_students == []
+      puts "Everyone was here on time today!"
+    elsif late_students != []
       puts "Here's who was late today:"
-      puts late_student_array
+      puts late_students
+    elsif absent_students != []
+      puts "Here's who is absent today:"
+      puts absent_students
     end
   end
 

@@ -13,4 +13,13 @@ class Attendance < ActiveRecord::Base
    self.seconds_early = seconds_early
  end
 
+ def is_current_day
+   if self.arrival_time.to_date == DateTime.now.to_date
+     return true
+   else
+     return false
+   end
+ end
+
+
 end
