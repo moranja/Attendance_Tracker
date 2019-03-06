@@ -2,6 +2,10 @@ require_relative 'config/environment.rb'
 
 @cli = HighLine.new
 
+def clear_logs
+  system "clear"
+end
+
 def make_the_current_day
   School_Day.find_or_create_by(date: DateTime.now)
 end
@@ -22,11 +26,11 @@ def start_menu(student)
   HighLine::Menu.index_color = :rgb_999999
   @cli.choose do |menu|
     menu.prompt = "What would you like to do?"
-    menu.choice("Log attendance for today") {student.sign_in}
-    menu.choice("Change arrival time for today") {student.change_arrival_time(@cli.ask "Please enter the time you arrived (in format HH-MM):")}
-    menu.choice("Check my attendance") {@cli.say("Here is your attendance record: #{student.check_my_attendance}")}
-    menu.choice("See attendance of whole class") {@cli.say("Here is the attendance record for your class: #{Attendance.all}")}
-    menu.choice("See who's late today") {@cli.say("Here is who was late today: #{Student.who_is_late}")}
+    menu.choice("Log attendance for today") {clear_logs && student.sign_in}
+    menu.choice("Change arrival time for today") {clear_logs && student.change_arrival_time(@cli.ask "Please enter the time you arrived (in format HH-MM):")}
+    menu.choice("Check my attendance") {clear_logs && @cli.say("Here is your attendance record: #{student.check_my_attendance}")}
+    menu.choice("See attendance of whole class") {clear_logs && @cli.say("Here is the attendance record for your class: #{Attendance.all}")}
+    menu.choice("See who's late today") {clear_logs && @cli.say("Here is who was late today: #{Student.who_is_late}")}
     menu.choice("Exit") {return "Exit"}
   end
 end
@@ -34,6 +38,8 @@ end
 ############################################
 #### Start the real program here ###########
 ############################################
+
+
 
 make_the_current_day
 current_student = ask_the_student_to_log_in
