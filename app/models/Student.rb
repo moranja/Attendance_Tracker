@@ -30,7 +30,18 @@ class Student < ActiveRecord::Base
   end
 
   def self.who_is_late
-    self.all.select {|student| student.attendances.last.seconds_early < 0}
+    late_students = self.all.select do |student|
+      if student.attendances.last != nil
+        student.attendances.last.seconds_early < 0
+      end
+    end
+    if late_students == nil
+      puts "Everyone was on time today!"
+    else
+      late_student_array = late_students.map {|student| student.full_name}
+      puts "Here's who was late today:"
+      puts late_student_array
+    end
   end
 
   def change_arrival_time(hh_mm)
@@ -70,8 +81,14 @@ class Student < ActiveRecord::Base
     end
   end
 
-  def self.create_student(full_name, pin_number, is_teacher)
-    Student.create(full_name: full_name, pin_number: pin_number.to_i, is_teacher: false)
+  def self.create_student(deets)
+    deets_array = deets.split(', ')
+    Student.create(full_name: deets_array[0], pin_number: deets_array[1].to_i, is_teacher: false)
+  end
+
+  def self.create_teacher(deets)
+    deets_array = deets.split(', ')
+    Student.create(full_name: deets_array[0], pin_number: deets_array[1].to_i, is_teacher: true)
   end
 
 

@@ -43,6 +43,8 @@ def teacher_menu(student)
     menu.choice("Check my attendance") {clear_logs && student.check_my_attendance(@cli.ask "How many days would you like to see?")}
     menu.choice("See attendance of whole class") {clear_logs && @cli.say("Here is the attendance record for your class: #{Attendance.all}")}
     menu.choice("See who's late today") {clear_logs && @cli.say("Here is who was late today: #{Student.who_is_late}")}
+    menu.choice("Add a student") {clear_logs && Student.create_student(@cli.ask "Enter full name and pin_number of student to be created (in format 'Adam Moran, 12345678'):")}
+    menu.choice("Add a teacher") {clear_logs && Student.create_teacher(@cli.ask "Enter full name and pin_number of teacher to be created (in format 'Joshua Miles, 12345678'):")}
     menu.choice("Remove a student") {clear_logs && Student.delete_student(@cli.ask "Enter full name of student to be deleted:")}
     menu.choice("Exit") {return "Exit"}
   end
@@ -58,8 +60,8 @@ end
 
 
 make_the_current_day
-current_student = ask_the_student_to_log_in
-greet_student(current_student)
+clear_logs && current_student = ask_the_student_to_log_in
+clear_logs && greet_student(current_student)
 
 return_value = ''
 while return_value != "Exit" && return_value != "Teacher"
