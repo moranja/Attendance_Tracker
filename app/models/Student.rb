@@ -13,14 +13,24 @@ class Student < ActiveRecord::Base
   #sign_in works if you say school_day_id: School_Day.last.id, but not if you write it
   #school_day: School_Day.last
 
-  def check_my_attendance
-    self.attendances.last(5).each do |att|
+  def check_my_attendance (num_of_days)
+    how_early = 0
+    self.attendances.last(num_of_days.to_i).each do |att|
       puts "On #{att.arrival_time.to_date} you got here at #{att.arrival_time.to_time.strftime("%H:%M")}."
+      how_early += att.seconds_early
+    end
+    how_early /= num_of_days.to_i
+    if how_early > 600
+      puts "Great job, early bird!"
+    elsif how_early < 0
+      puts "You need to work on your punctuality!"
+    else
+      puts "You're cutting it close...."
     end
   end
 
   def self.who_is_late
-    self.all.select {|student| student.attendances.last.minutes_early < 0}
+    self.all.select {|student| student.attendances.last.seconds_early < 0}
   end
 
   def change_arrival_time(hh_mm)
@@ -29,5 +39,6 @@ class Student < ActiveRecord::Base
     todays_attendance.arrival_time = School_Day.today(new_time).in_time_zone("Central Time (US & Canada)")
     todays_attendance.is_early_or_late
     todays_attendance.manually_changed = true
+    todays_attendance.save
   end
 end
