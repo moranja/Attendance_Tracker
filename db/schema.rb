@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20190304191738) do
     t.integer  "school_day_id"
     t.datetime "arrival_time"
     t.boolean  "manually_changed"
-    t.integer  "minutes_early"
+    t.integer  "seconds_early"
     t.index ["school_day_id"], name: "index_attendances_on_school_day_id"
     t.index ["student_id"], name: "index_attendances_on_student_id"
   end
