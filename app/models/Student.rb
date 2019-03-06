@@ -30,4 +30,24 @@ class Student < ActiveRecord::Base
     todays_attendance.is_early_or_late
     todays_attendance.manually_changed = true
   end
+  
+  def self.is_earliest
+    earliest = 0
+    early_bird = ' '
+    self.all.each do |student|
+      if student.attendances.seconds_early > earliest
+        earliest = student.attendances.seconds_early
+        early_bird = student.full_name
+      end
+    end
+    early_bird
+  end  
+   
+  def self.delete_student(student_name)
+    castaway = Student.find_by full_name: student_name
+    castaway.delete 
+    puts "Deleted Student: #{student_name}" 
+  end
+
+
 end
