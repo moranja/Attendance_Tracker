@@ -3,7 +3,7 @@ class Student < ActiveRecord::Base
   has_many :school_days, through: :attendances
 
   def sign_in
-    if self.attendances.last.is_current_day || nil
+    if self.attendances.last.arrival_time.to_date.today? || nil
       puts "You've already logged your attendance today!"
     else
       todays_attendance = Attendance.create(student: self,  school_day_id: School_Day.last.id, manually_changed: false, arrival_time: DateTime.now.in_time_zone("Central Time (US & Canada)"))
@@ -33,7 +33,7 @@ class Student < ActiveRecord::Base
     absent_students = []
     late_students = []
     self.all.each do |student|
-      if student.attendances.last.is_current_day != true && student.is_teacher == false
+      if student.attendances.last.arrival_time.to_date.today? != true && student.is_teacher == false
         absent_students << student.full_name
       elsif student.attendances.last.seconds_early < 0 && student.is_teacher == false
         late_students << student.full_name
@@ -120,6 +120,19 @@ class Student < ActiveRecord::Base
       puts "Your pin number has been changed to #{int_in_a_string.to_i}"
       self.pin_number = int_in_a_string.to_i
       self.save
+    end
+  end
+
+  def self.export_attendance_sheet(file_name)
+    CSV.open("csv/#{file_name}.csv", "w+") do |csv|
+      title_row = School_Day.all.map {|sd| sd.date}
+      title_row.unshift("Students")
+      csv << title_row
+      Student.find_each do |student|
+        array_test = student.attendances.map {|x| x.arrival_time.in_time_zone("Central Time (US & Canada)")}
+        array_test.unshift(student.full_name)
+        csv << array_test
+      end
     end
   end
 
