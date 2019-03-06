@@ -6,6 +6,10 @@ def clear_logs
   system "clear"
 end
 
+def random_color
+  
+end
+
 def make_the_current_day
   School_Day.find_or_create_by(date: DateTime.now)
 end
@@ -37,17 +41,27 @@ end
 def teacher_menu(student)
   HighLine::Menu.index_color = :rgb_999999
   @cli.choose do |menu|
-    menu.prompt = "What would you like to do?"
-    menu.choice("Log attendance for today") {clear_logs && student.sign_in}
-    menu.choice("Change arrival time for today") {clear_logs && student.change_arrival_time(@cli.ask "Please enter the time you arrived (in format HH-MM):")}
-    menu.choice("Check my attendance") {clear_logs && student.check_my_attendance(@cli.ask "How many days would you like to see?")}
-    menu.choice("See attendance of whole class") {clear_logs && @cli.say("Here is the attendance record for your class: #{Attendance.all}")}
-    menu.choice("See who's late today") {clear_logs && @cli.say("Here is who was late today: #{Student.who_is_late}")}
+    menu.prompt = "What would you like to do?".colorize(:background => :green)
+    menu.choice("Log attendance for today".colorize(:background => :blue)) {clear_logs && student.sign_in}
+
+    menu.choice("Change arrival time for today".colorize(:background => :purple)) {clear_logs && student.change_arrival_time(@cli.ask "Please enter the time you arrived (in format HH-MM):".colorize(:background => :yellow))}
+
+    menu.choice("Check my attendance".colorize(:background => :pink)) {clear_logs && student.check_my_attendance(@cli.ask "How many days would you like to see?".colorize(:background => :light_blue))}
+
+    menu.choice("See attendance of whole class".colorize(:background => :red)) {clear_logs && @cli.say("Here is the attendance record for your class: #{Attendance.all}")}
+
+    menu.choice("See who's late today".colorize(:background => :grey)) {clear_logs && @cli.say("Here is who was late today: #{Student.who_is_late}")}
+
     menu.choice("Add a student") {clear_logs && Student.create_student(@cli.ask "Enter full name and pin_number of student to be created (in format 'Adam Moran, 12345678'):")}
+
     menu.choice("Add a teacher") {clear_logs && Student.create_teacher(@cli.ask "Enter full name and pin_number of teacher to be created (in format 'Joshua Miles, 12345678'):")}
+
     menu.choice("Remove a student") {clear_logs && Student.delete_student(@cli.ask "Enter full name of student to be deleted:")}
+
     menu.choice("Remove a teacher") {clear_logs && student.delete_teacher(@cli.ask "Enter full name of student to be deleted:")}
+
     menu.choice("Change my pin number") {clear_logs && student.change_pin_number(@cli.ask "Enter an eight digit number:")}
+
     menu.choice("Exit") {return "Exit"}
   end
 end
