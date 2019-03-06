@@ -5,8 +5,11 @@ School_Day.destroy_all
 Attendance.destroy_all
 
 CSV.foreach("csv/studentdb.csv") do |row|
-  Student.create(full_name:row[0], pin_number: row[1])
+  Student.create(full_name:row[0], pin_number: row[1], is_teacher: false)
 end
+
+Student.create(full_name: 'Alan Hong',pin_number: '11111111'.to_i,is_teacher: true)
+Student.create(full_name: 'Joshua Miles',pin_number: '22222222'.to_i,is_teacher: true)
 
 School_Day.create(date: DateTime.new(2019,3,6,9,0,0).in_time_zone("Central Time (US & Canada)").to_date.to_s)
 #Attendance.create

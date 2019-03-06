@@ -29,11 +29,27 @@ def start_menu(student)
     menu.choice("Log attendance for today") {clear_logs && student.sign_in}
     menu.choice("Change arrival time for today") {clear_logs && student.change_arrival_time(@cli.ask "Please enter the time you arrived (in format HH-MM):")}
     menu.choice("Check my attendance") {clear_logs && student.check_my_attendance(@cli.ask "How many days would you like to see?")}
-    menu.choice("See attendance of whole class") {clear_logs && @cli.say("Here is the attendance record for your class: #{Attendance.all}")}
-    menu.choice("See who's late today") {clear_logs && @cli.say("Here is who was late today: #{Student.who_is_late}")}
+    menu.choice("See Teacher Options") {clear_logs && student.check_if_teacher}
     menu.choice("Exit") {return "Exit"}
   end
 end
+
+def teacher_menu(student)
+  HighLine::Menu.index_color = :rgb_999999
+  @cli.choose do |menu|
+    menu.prompt = "What would you like to do?"
+    menu.choice("Log attendance for today") {clear_logs && student.sign_in}
+    menu.choice("Change arrival time for today") {clear_logs && student.change_arrival_time(@cli.ask "Please enter the time you arrived (in format HH-MM):")}
+    menu.choice("Check my attendance") {clear_logs && student.check_my_attendance(@cli.ask "How many days would you like to see?")}
+    menu.choice("See attendance of whole class") {clear_logs && @cli.say("Here is the attendance record for your class: #{Attendance.all}")}
+    menu.choice("See who's late today") {clear_logs && @cli.say("Here is who was late today: #{Student.who_is_late}")}
+    menu.choice("Remove a student") {clear_logs && Student.delete_student(@cli.ask "Enter full name of student to be deleted:")}
+    menu.choice("Exit") {return "Exit"}
+  end
+end
+
+# menu.choice("See attendance of whole class") {clear_logs && @cli.say("Here is the attendance record for your class: #{Attendance.all}")}
+# menu.choice("See who's late today") {clear_logs && @cli.say("Here is who was late today: #{Student.who_is_late}")}
 
 ############################################
 #### Start the real program here ###########
@@ -46,10 +62,15 @@ current_student = ask_the_student_to_log_in
 greet_student(current_student)
 
 return_value = ''
-while return_value != "Exit"
+while return_value != "Exit" && return_value != "Teacher"
   return_value = start_menu(current_student)
 end
 
+if return_value == "Teacher"
+  while return_value != "Exit"
+    return_value = teacher_menu(current_student)
+  end
+end
 
 
 #Pry.start

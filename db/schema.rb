@@ -29,6 +29,7 @@ ActiveRecord::Schema.define(version: 20190304191738) do
   create_table "students", force: :cascade do |t|
     t.string  "full_name"
     t.integer "pin_number"
+    t.boolean "is_teacher"
   end
 
 end

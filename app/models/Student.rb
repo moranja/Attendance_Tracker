@@ -41,7 +41,7 @@ class Student < ActiveRecord::Base
     todays_attendance.manually_changed = true
     todays_attendance.save
   end
-  
+
   def self.is_earliest
     earliest = 0
     early_bird = ' '
@@ -52,12 +52,22 @@ class Student < ActiveRecord::Base
       end
     end
     early_bird
-  end  
-   
+  end
+
   def self.delete_student(student_name)
     castaway = Student.find_by full_name: student_name
-    castaway.delete 
-    puts "Deleted Student: #{student_name}" 
+    castaway.delete
+    puts "Deleted Student: #{student_name}"
+    return "Teacher"
+  end
+
+  def check_if_teacher
+    if self.is_teacher == true
+      puts "Welcome, to the teacher menu!"
+      return "Teacher"
+    else
+      puts "You're not a teacher!"
+    end
   end
 
 
