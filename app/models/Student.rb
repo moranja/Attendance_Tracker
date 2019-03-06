@@ -96,7 +96,7 @@ class Student < ActiveRecord::Base
 
   def check_if_teacher
     if self.is_teacher == true
-      puts "Welcome, to the teacher menu!"
+      puts "Welcome, to the teacher menu!".colorize(:cyan).on_magenta.underline
       return "Teacher"
     else
       puts "You're not a teacher!"

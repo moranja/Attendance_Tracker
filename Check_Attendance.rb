@@ -52,20 +52,20 @@ def teacher_menu(student)
     
     menu.prompt = "What would you like to do?".colorize(:background => :green)
 
-    menu.choice("Export attendance to .csv file".colorize(:background => :red)) {clear_logs && Student.export_attendance_sheet(@cli.ask("Enter file name for output:"))}
+    menu.choice("Export attendance to .csv file".colorize(:background => :light_blue)) {clear_logs && Student.export_attendance_sheet(@cli.ask("Enter file name for output:"))}
 
-    menu.choice("See who's late today".colorize(:background => :grey)) {clear_logs && Student.who_is_late}
-    menu.choice("Add a student") {clear_logs && Student.create_student(@cli.ask "Enter full name and pin_number of student to be created (in format 'Adam Moran, 12345678'):")}
+    menu.choice("See who's late today".colorize(:background => :yellow)) {clear_logs && Student.who_is_late}
+    menu.choice("Add a student".colorize(:background => :light_green)) {clear_logs && Student.create_student(@cli.ask "Enter full name and pin_number of student to be created (in format 'Adam Moran, 12345678'):")}
 
-    menu.choice("Add a teacher") {clear_logs && Student.create_teacher(@cli.ask "Enter full name and pin_number of teacher to be created (in format 'Joshua Miles, 12345678'):")}
+    menu.choice("Add a teacher".colorize(:background => :green)) {clear_logs && Student.create_teacher(@cli.ask "Enter full name and pin_number of teacher to be created (in format 'Joshua Miles, 12345678'):")}
 
-    menu.choice("Remove a student") {clear_logs && Student.delete_student(@cli.ask "Enter full name of student to be deleted:")}
+    menu.choice("Remove a student".colorize(:background => :light_red)) {clear_logs && Student.delete_student(@cli.ask "Enter full name of student to be deleted:")}
 
-    menu.choice("Remove a teacher") {clear_logs && student.delete_teacher(@cli.ask "Enter full name of student to be deleted:")}
+    menu.choice("Remove a teacher".colorize(:background => :blue)) {clear_logs && student.delete_teacher(@cli.ask "Enter full name of student to be deleted:")}
 
-    menu.choice("Change my pin number") {clear_logs && student.change_pin_number(@cli.ask "Enter an eight digit number:")}
+    menu.choice("Change my pin number".colorize(:background => :cyan)) {clear_logs && student.change_pin_number(@cli.ask "Enter an eight digit number:")}
 
-    menu.choice("Exit") {return "Exit"}
+    menu.choice("Exit".colorize(:background => :red)) {return "Exit"}
   end
 end
 
