@@ -52,7 +52,7 @@ def teacher_menu(student)
 
     menu.prompt = "What would you like to do?".colorize(:background => :green)
 
-    menu.choice("Export attendance to .csv file".colorize(:background => :light_blue)) {clear_logs && Student.export_attendance_sheet(@cli.ask("Enter file name for output:"))}
+    menu.choice("Export attendance to .csv file".colorize(:background => :light_blue)) {clear_logs && Attendance.export_attendance_sheet(@cli.ask("Enter file name for output:"))}
 
     menu.choice("See who's late today".colorize(:background => :yellow)) {clear_logs && Student.who_is_late}
 

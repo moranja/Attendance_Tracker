@@ -126,17 +126,4 @@ class Student < ActiveRecord::Base
       self.save
     end
   end
-
-  def self.export_attendance_sheet(file_name)
-    CSV.open("csv/#{file_name}.csv", "w+") do |csv|
-      title_row = School_Day.all.map {|sd| sd.date}
-      title_row.unshift("Students")
-      csv << title_row
-      Student.find_each do |student|
-        array_test = student.attendances.map {|x| x.arrival_time.in_time_zone("Central Time (US & Canada)")}
-        array_test.unshift(student.full_name)
-        csv << array_test
-      end
-    end
-  end
 end
