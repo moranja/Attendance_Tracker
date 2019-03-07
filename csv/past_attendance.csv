@@ -1,0 +1,44 @@
+NAME,Mon 2/18/19,Tue 2/19/19,Wed 2/20/19,Thu 2/21/19,Fri 2/22/19,Mon 2/25/19,Tue 2/26/19,Wed 2/27/19,Thu 2/28/19,Fri 3/1/19,Mon 3/4/19,Tue 3/5/19,Wed 3/6/19,Thu 3/7/19,Fri 3/8/19
+Adam Moran,9:00 AM,8:35 AM,9:03 AM,8:40 AM,8:32 AM,8:40 AM,8:42 AM,8:40 AM,8:46 AM,8:35 AM,8:35 AM,8:35 AM,9:30 AM,
+Cory Harper,9:00 AM,8:46 AM,9:02 AM,8:44 AM,8:54,9:00,9:11 AM,8:57 AM,8:52 AM,8:58 AM,8:30 AM,9:00 AM,9:00 AM,
+Eli Lauffenburger,9:00 AM,8:50 AM,8:40 AM,8:48 AM,8:54 AM,8:54 AM,8:53 AM,8:56 AM,9:07 AM,9:00 AM,8:55 AM,9:07 AM,9:00 AM,
+Hemalatha Murugan,9:00 AM,8:43 AM,8:39 AM,8:23 AM,8:45 AM,9:10 AM,8:35 AM,8:15 AM,8:35 AM,8:42 AM,8:05 AM,8:30 AM,9:00 AM,
+Jack Rotta,9:00 AM,8:46 AM,8:45 AM,8:46 AM,9:14 AM,8:50 AM,8:50 AM,8:34 AM,8:35 AM,8:46 AM,8:44 AM,8:40 AM,8:46 AM,
+Jessica Brumfield,9:00 AM,9:10 AM,8:30 AM,8:30 AM,8:49 AM,9:09 AM,8:00 AM,8:45 AM,8:45 AM,9:35 AM,9:00 AM,9:00 AM,8:58 AM,
+Jing Chen,9:00 AM,8:48 AM,8:48 AM,8:49 AM,8:52 AM,8:54 AM,8:50 AM,8:50 AM,8:50 AM,9:00 AM,8:42 AM,8:45 AM,8:49 AM,
+Josephine Yao,9:00 AM,8:48 AM,9:00 AM,8:35 AM,8:30 AM,8:50 AM,8:55 AM,8:45 AM,8:30 AM,8:50 AM,8:55 AM,8:45 AM,8:55 AM,
+Mark Pothecary,9:00 AM,8:30 AM,8:25 AM,8:35 AM,8:35 AM,8:23 AM,8:30 AM,8:35 AM,8:25 AM,8:35 AM,8:15 AM,8:40 AM,8:35 AM,
+Olivia Auzenne,9:00 AM,8:35 AM,8:18 AM,8:35 AM,8:25 AM,8:15 AM,9:00 AM,8:15 AM,8:35 AM,9:00 AM,8:15 AM,8:15 AM,8:18 AM,
+Robert Vidal,9:00 AM,8:23 AM,8:00 AM,8:05 AM,8:00 AM,8:10 AM,8:00 AM,8:00 AM,8:00 AM,8:05 AM,8:05 AM,8:00 AM,8:00 AM,
+Rochell Flood,9:00 AM,8:20 AM,8:18 AM,8:16 AM,8:16 AM,8:18 AM,8:18 AM,8:15 AM,8:00 AM,7:30 AM,8:15 AM,8:15 AM,8:15 AM,
+Theodore Kimana,9:00 AM,8:30 AM,8:32 AM,8:12 AM,8:13 AM,8:23 AM,7:45 AM,7:45 AM,8:20 AM,7:45 AM,7:45 AM,7:45 AM,7:50 AM,
+Thomas Hansen,9:00 AM,8:48 AM,8:24 AM,8:43 AM,8:26 AM,8:35 AM,8:50 AM,8:56 AM,8:45 AM,8:37 AM,8:52 AM,8:27 AM,8:37 AM,
+Trey Beauchamp,9:00 AM,8:00 AM,8:30 AM,8:00 AM,8:30 AM,8:40 AM,8:45 AM,8:45 AM,8:22 AM,8:20 AM,8:45 AM,8:45 AM,8:40 AM,
+Zoe Bai,9:00 AM,8:45 AM,8:36 AM,8:29 AM,8:30 AM,8:35 AM,8:31 AM,8:32 AM,8:25 AM,8:39 AM,8:41 AM,8:30 AM,8:35 AM,
+
+
+
+
+
+
+
+
+CSV.foreach("csv/past_attendance.csv", :headers => true) do |row|
+  row.each do |header, value|
+    current_student = ''
+    binding.pry
+    if header == "NAME"
+      current_student = Student.create(full_name: value, pin_number: 12345678, is_teacher: false)
+    else
+      date = header.split(' ').pop
+      date_array = date.split('/')
+      int_date_array = date_array.map {|x| x.to_i}
+      binding.pry
+      int_date_array[2] += 2000
+      current_day =
+      #School_Day.find_or_create_by(date: DateTime.new(2019,3,5,9,0,0).in_time_zone("Central Time (US & Canada)").to_date.to_s)
+      #Attendance.create(student: current_student,)
+      binding.pry
+    end
+  end
+end
