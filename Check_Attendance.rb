@@ -56,11 +56,11 @@ def teacher_menu(student)
 
     menu.choice("See who's late today".colorize(:background => :yellow)) {clear_logs && Student.who_is_late}
 
-    menu.choice("Login in to a student") {clear_logs && menu(Student.find_by(full_name: (@cli.ask "Enter full name of student to be created (e.g. Adam Moran):")))}
+    menu.choice("Login in to a student") {clear_logs && menu(Student.find_by(full_name: (@cli.ask "Enter full name of student to log in as (e.g. Adam Moran):")))}
 
-    menu.choice("Add a student".colorize(:background => :light_green)) {clear_logs && Student.create_student(@cli.ask "Enter full name and pin_number of student to be created (in format 'Adam Moran, 12345678'):")}
+    menu.choice("Add a student".colorize(:background => :light_green)) {clear_logs && Student.create_student_or_teacher((@cli.ask "Enter full name and pin_number of student to be created (in format 'Adam Moran, 12345678'):"),'student')}
 
-    menu.choice("Add a teacher".colorize(:background => :green)) {clear_logs && Student.create_teacher(@cli.ask "Enter full name and pin_number of teacher to be created (in format 'Joshua Miles, 12345678'):")}
+    menu.choice("Add a teacher".colorize(:background => :green)) {clear_logs && Student.create_student_or_teacher(@cli.ask "Enter full name and pin_number of teacher to be created (in format 'Joshua Miles, 12345678'):",'teacher')}
 
     menu.choice("Remove a student".colorize(:background => :light_red)) {clear_logs && Student.delete_student(@cli.ask "Enter full name of student to be deleted:")}
 
@@ -99,4 +99,4 @@ clear_logs && greet_student(current_student)
 menu(current_student)
 
 
-#Pry.start
+Pry.start

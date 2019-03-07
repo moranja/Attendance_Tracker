@@ -71,15 +71,18 @@ class Student < ActiveRecord::Base
     end
   end
 
-  def self.create_student(deets)
+  def self.create_student_or_teacher(deets, teacher)
+    binding.pry
+    teacher_boolean = false if teacher == 'student'
+    teacher_boolean = true if teacher == 'teacher'
     deets_array = deets.split(', ')
-    Student.create(full_name: deets_array[0], pin_number: deets_array[1].to_i, is_teacher: false)
+    Student.create(full_name: deets_array[0].delete("'").delete('"'), pin_number: deets_array[1].to_i, is_teacher: teacher_boolean)
   end
 
-  def self.create_teacher(deets)
-    deets_array = deets.split(', ')
-    Student.create(full_name: deets_array[0], pin_number: deets_array[1].to_i, is_teacher: true)
-  end
+  # def self.create_teacher(deets)
+  #   deets_array = deets.split(', ')
+  #   Student.create(full_name: deets_array[0], pin_number: deets_array[1].to_i, is_teacher: true)
+  # end
 
   def self.delete_student(student_name)
     castaway = Student.find_by full_name: student_name
