@@ -11,6 +11,8 @@ CSV.foreach("csv/past_attendance.csv", :headers => true) do |row|
     if header == "NAME"
       current_student = Student.create(full_name: value, pin_number: 12345678, is_teacher: false)
     elsif header == nil
+    elsif header == "BIRTHDAY"
+      current_student.update(pin_number: value)
     else
       date = header.split(' ').pop
       date_array = date.split('/')
