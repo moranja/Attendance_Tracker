@@ -40,8 +40,8 @@ def start_menu(student)
     menu.prompt = "What would you like to do?"
     menu.choice("Log attendance for today") {clear_logs && student.sign_in}
     menu.choice("Change arrival time for today") {clear_logs && student.change_arrival_time(@cli.ask "Please enter the time you arrived (in format HH-MM):")}
-    menu.choice("Check my attendance") {clear_logs && student.check_my_attendance(@cli.ask "How many days would you like to see?")}
-    menu.choice("See Teacher Options") {clear_logs && student.check_if_teacher}
+    menu.choice("Check my attendance") {clear_logs && student.check_my_attendance(@cli.ask "How many days would you like to see? (Enter '-1' for all)")}
+    menu.choice("Check how much class time I've missed") {clear_logs && student.total_class_missed}
     menu.choice("Exit") {return "Exit"}
   end
 end
@@ -55,7 +55,7 @@ def teacher_menu(student)
     menu.choice("Export attendance to .csv file".colorize(:background => :light_blue)) {clear_logs && Student.export_attendance_sheet(@cli.ask("Enter file name for output:"))}
 
     menu.choice("See who's late today".colorize(:background => :yellow)) {clear_logs && Student.who_is_late}
-    
+
     menu.choice("Add a student".colorize(:background => :light_green)) {clear_logs && Student.create_student(@cli.ask "Enter full name and pin_number of student to be created (in format 'Adam Moran, 12345678'):")}
 
     menu.choice("Add a teacher".colorize(:background => :green)) {clear_logs && Student.create_teacher(@cli.ask "Enter full name and pin_number of teacher to be created (in format 'Joshua Miles, 12345678'):")}
@@ -82,15 +82,21 @@ clear_logs && current_student = ask_the_student_to_log_in
 clear_logs && greet_student(current_student)
 
 return_value = ''
-while return_value != "Exit" && return_value != "Teacher"
-  return_value = start_menu(current_student)
-end
-
-if return_value == "Teacher"
+if current_student.is_teacher
   while return_value != "Exit"
     return_value = teacher_menu(current_student)
   end
+else
+  while return_value != "Exit" && return_value != "Teacher"
+    return_value = start_menu(current_student)
+  end
 end
+#
+# if return_value == "Teacher"
+#   while return_value != "Exit"
+#     return_value = teacher_menu(current_student)
+#   end
+# end
 
 
 #Pry.start

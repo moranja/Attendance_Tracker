@@ -29,20 +29,23 @@ class Student < ActiveRecord::Base
     end
   end
 
+  def total_class_missed
+    total = self.attendances.all.select {|a| a.seconds_early < 0}.map {|a| a.seconds_early}.inject(:+) / 60 * -1
+    puts "You have missed #{total} minutes of class!"
+  end
+
   def self.who_is_late
     absent_students = []
     late_students = []
-    self.all.each do |student|
+    self.all.select{|student| !student.is_teacher}.each do |student|
       if student.attendances.last.arrival_time.to_date.today? != true && student.is_teacher == false
         absent_students << student.full_name
       elsif student.attendances.last.seconds_early < 0 && student.is_teacher == false
         late_students << student.full_name
       end
     end
-
-    if late_students == [] && absent_students == []
-      puts "Everyone was here on time today!"
-    elsif late_students != []
+    puts "Everyone was here on time today!" if late_students == [] && absent_students == []
+    if late_students != []
       puts "Here's who was late today:"
       puts late_students
     elsif absent_students != []
@@ -70,6 +73,16 @@ class Student < ActiveRecord::Base
       end
     end
     early_bird
+  end
+
+  def self.create_student(deets)
+    deets_array = deets.split(', ')
+    Student.create(full_name: deets_array[0], pin_number: deets_array[1].to_i, is_teacher: false)
+  end
+
+  def self.create_teacher(deets)
+    deets_array = deets.split(', ')
+    Student.create(full_name: deets_array[0], pin_number: deets_array[1].to_i, is_teacher: true)
   end
 
   def self.delete_student(student_name)
@@ -103,16 +116,6 @@ class Student < ActiveRecord::Base
     end
   end
 
-  def self.create_student(deets)
-    deets_array = deets.split(', ')
-    Student.create(full_name: deets_array[0], pin_number: deets_array[1].to_i, is_teacher: false)
-  end
-
-  def self.create_teacher(deets)
-    deets_array = deets.split(', ')
-    Student.create(full_name: deets_array[0], pin_number: deets_array[1].to_i, is_teacher: true)
-  end
-
   def change_pin_number(int_in_a_string)
     if int_in_a_string.to_i.digits.count != 8
       puts "The new pin number was not an 8 digit number, please try again!"
@@ -135,7 +138,4 @@ class Student < ActiveRecord::Base
       end
     end
   end
-
-
-
 end
