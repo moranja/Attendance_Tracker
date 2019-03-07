@@ -10,8 +10,6 @@ class Student < ActiveRecord::Base
       todays_attendance.is_early_or_late
     end
   end
-  #sign_in works if you say school_day_id: School_Day.last.id, but not if you write it
-  #school_day: School_Day.last
 
   def check_my_attendance (num_of_days)
     how_early = 0
@@ -109,14 +107,15 @@ class Student < ActiveRecord::Base
     end
   end
 
-  def check_if_teacher
-    if self.is_teacher == true
-      puts "Welcome, to the teacher menu!".colorize(:cyan).on_magenta.underline
-      return "Teacher"
-    else
-      puts "You're not a teacher!"
-    end
-  end
+  # def check_if_teacher
+  #   if self.is_teacher == true
+  #     puts "Welcome, to the teacher menu!".colorize(:cyan).on_magenta.underline
+  #     return "Teacher"
+  #   else
+  #     puts "You're not a teacher!"
+  #   end
+  # end
+  # ^-- obsolete, from when teachers had to enter teacher menu from student menu
 
   def change_pin_number(int_in_a_string)
     if int_in_a_string.to_i.digits.count != 8
