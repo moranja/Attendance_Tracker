@@ -11,6 +11,7 @@ class Attendance < ActiveRecord::Base
      puts "you are #{Time.at(seconds_late).utc.strftime("%H:%M:%S")} late"
    end
    self.seconds_early = seconds_early
+   self.save
  end
 
 

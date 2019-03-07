@@ -30,8 +30,12 @@ class Student < ActiveRecord::Base
   end
 
   def total_class_missed
-    total = self.attendances.all.select {|a| a.seconds_early < 0}.map {|a| a.seconds_early}.inject(:+) / 60 * -1
-    puts "You have missed #{total} minutes of class!"
+    if self.attendances.all.select {|a| a.seconds_early < 0} == []
+      puts "You haven't missed any class! Great job!"
+    else
+      total = self.attendances.all.select {|a| a.seconds_early < 0}.map {|a| a.seconds_early}.inject(:+) / 60 * -1
+      puts "You have missed #{total} minutes of class!"
+    end
   end
 
   def self.who_is_late
@@ -57,23 +61,21 @@ class Student < ActiveRecord::Base
   def change_arrival_time(hh_mm)
     new_time = (hh_mm.split("-") << '00').join('-')
     todays_attendance = self.attendances.last
-    todays_attendance.arrival_time = School_Day.today(new_time).in_time_zone("Central Time (US & Canada)")
+    todays_attendance.update(arrival_time: School_Day.current_day(new_time, todays_attendance).in_time_zone("Central Time (US & Canada)"), manually_changed: true)
     todays_attendance.is_early_or_late
-    todays_attendance.manually_changed = true
-    todays_attendance.save
   end
 
-  def self.is_earliest
-    earliest = 0
-    early_bird = ' '
-    self.all.each do |student|
-      if student.attendances.seconds_early > earliest
-        earliest = student.attendances.seconds_early
-        early_bird = student.full_name
-      end
-    end
-    early_bird
-  end
+  # def self.is_earliest
+  #   earliest = 0
+  #   early_bird = ' '
+  #   self.all.each do |student|
+  #     if student.attendances.seconds_early > earliest
+  #       earliest = student.attendances.seconds_early
+  #       early_bird = student.full_name
+  #     end
+  #   end
+  #   early_bird
+  # end
 
   def self.create_student(deets)
     deets_array = deets.split(', ')

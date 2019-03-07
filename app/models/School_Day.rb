@@ -1,7 +1,7 @@
 class School_Day < ActiveRecord::Base
   has_many :attendances
   has_many :students, through: :attendances
-  
+
   # def self.today(hh_mm_ss)
   #   today = School_Day.last
   #   hms = hh_mm_ss.split('-')
