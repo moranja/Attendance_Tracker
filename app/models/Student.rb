@@ -12,18 +12,22 @@ class Student < ActiveRecord::Base
   end
 
   def check_my_attendance (num_of_days)
-    how_early = 0
-    self.attendances.last(num_of_days.to_i).each do |att|
-      puts "On #{att.arrival_time.to_date} you got here at #{att.arrival_time.to_time.strftime("%H:%M")}."
-      how_early += att.seconds_early
-    end
-    how_early /= num_of_days.to_i
-    if how_early > 600
-      puts "Great job, early bird!"
-    elsif how_early < 0
-      puts "You need to work on your punctuality!"
+    if num_of_days.to_i == 0
     else
-      puts "You're cutting it close...."
+      how_early = 0
+      self.attendances.last(num_of_days.to_i).each do |att|
+        puts "On #{att.arrival_time.to_date} you got here at #{att.arrival_time.to_time.strftime("%H:%M")}."
+        how_early += att.seconds_early
+      end
+      binding.pry
+      how_early /= num_of_days.to_i
+      if how_early > 600
+        puts "Great job, early bird!"
+      elsif how_early < 0
+        puts "You need to work on your punctuality!"
+      else
+        puts "You're cutting it close...."
+      end
     end
   end
 
@@ -58,22 +62,14 @@ class Student < ActiveRecord::Base
 
   def change_arrival_time(hh_mm)
     new_time = (hh_mm.split("-") << '00').join('-')
-    todays_attendance = self.attendances.last
-    todays_attendance.update(arrival_time: School_Day.current_day(new_time, todays_attendance).in_time_zone("Central Time (US & Canada)"), manually_changed: true)
-    todays_attendance.is_early_or_late
+    if new_time[0].to_i.digits.count != 2 && new_time[1].to_i.digits.count != 2
+      puts "Arrival time not updated, please enter the new arrival time in correct format!"
+    else
+      todays_attendance = self.attendances.last
+      todays_attendance.update(arrival_time: School_Day.current_day(new_time, todays_attendance).in_time_zone("Central Time (US & Canada)"), manually_changed: true)
+      todays_attendance.is_early_or_late
+    end
   end
-
-  # def self.is_earliest
-  #   earliest = 0
-  #   early_bird = ' '
-  #   self.all.each do |student|
-  #     if student.attendances.seconds_early > earliest
-  #       earliest = student.attendances.seconds_early
-  #       early_bird = student.full_name
-  #     end
-  #   end
-  #   early_bird
-  # end
 
   def self.create_student(deets)
     deets_array = deets.split(', ')
@@ -87,7 +83,9 @@ class Student < ActiveRecord::Base
 
   def self.delete_student(student_name)
     castaway = Student.find_by full_name: student_name
-    if castaway.is_teacher == true
+    if castaway == nil
+      puts "Could not find a student with that name."
+    elsif castaway.is_teacher == true
       puts "That's not a student, that's a teacher!"
     else
       castaway.delete
@@ -97,9 +95,11 @@ class Student < ActiveRecord::Base
 
   def delete_teacher(student_name)
     castaway = Student.find_by full_name: student_name
-    if castaway.is_teacher == false
+    if castaway == nil
+      puts "Could not find a teacher with that name."
+    elsif castaway.is_teacher == false
       puts "That's not a teacher, that's a student!"
-    elsif castaway = self
+    elsif castaway == self
       puts "You can't delete yourself!"
     else
       castaway.delete
@@ -107,18 +107,10 @@ class Student < ActiveRecord::Base
     end
   end
 
-  # def check_if_teacher
-  #   if self.is_teacher == true
-  #     puts "Welcome, to the teacher menu!".colorize(:cyan).on_magenta.underline
-  #     return "Teacher"
-  #   else
-  #     puts "You're not a teacher!"
-  #   end
-  # end
-  # ^-- obsolete, from when teachers had to enter teacher menu from student menu
-
   def change_pin_number(int_in_a_string)
-    if int_in_a_string.to_i.digits.count != 8
+    if int_in_a_string.to_i < 0
+        puts "Come on, man... Stop trying to break our code...."
+    elsif int_in_a_string.to_i.digits.count != 8
       puts "The new pin number was not an 8 digit number, please try again!"
     else
       puts "Your pin number has been changed to #{int_in_a_string.to_i}"

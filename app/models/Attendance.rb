@@ -20,10 +20,14 @@ class Attendance < ActiveRecord::Base
      title_row.unshift("Students")
      csv << title_row
      Student.find_each do |student|
-       array_test = student.attendances.map {|x| x.arrival_time.in_time_zone("Central Time (US & Canada)")}
-       array_test.unshift(student.full_name)
-       csv << array_test
+       if student.is_teacher
+       else
+         array_test = student.attendances.map {|x| x.arrival_time.in_time_zone("Central Time (US & Canada)")}
+         array_test.unshift(student.full_name)
+         csv << array_test
+       end
      end
    end
  end
+
 end
