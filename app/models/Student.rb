@@ -81,11 +81,6 @@ class Student < ActiveRecord::Base
     Student.create(full_name: deets_array[0].delete("'").delete('"'), pin_number: deets_array[1].to_i, is_teacher: teacher_boolean)
   end
 
-  # def self.create_teacher(deets)
-  #   deets_array = deets.split(', ')
-  #   Student.create(full_name: deets_array[0], pin_number: deets_array[1].to_i, is_teacher: true)
-  # end
-
   def self.delete_student(student_name)
     castaway = Student.find_by full_name: student_name
     if castaway == nil

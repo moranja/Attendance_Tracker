@@ -31,9 +31,6 @@ CSV.foreach("csv/past_attendance.csv", :headers => true) do |row|
     end
   end
 end
-fix_adam = Student.find_by(full_name: 'Adam Moran')
-fix_adam.pin_number = '99999999'
-fix_adam.save
 
 Student.create(full_name: 'Alan Hong',pin_number: '11111111'.to_i,is_teacher: true) #05171984
 Student.create(full_name: 'Joshua Miles',pin_number: '11041997'.to_i,is_teacher: true)
