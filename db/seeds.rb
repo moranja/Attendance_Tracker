@@ -1,9 +1,12 @@
 require 'pry'
 
+datetime = DateTime.now.to_s
+
+Attendance.export_attendance_sheet(datetime)
+
 Student.destroy_all
 School_Day.destroy_all
 Attendance.destroy_all
-
 
 CSV.foreach("csv/past_attendance.csv", :headers => true) do |row|
   current_student = ''

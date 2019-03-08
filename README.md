@@ -7,7 +7,7 @@ We have also included a proof of concept file 'Quick_Check_In.rb' in the reposit
 Below is our original proposal for the project. At Josh's suggestion we rolled the admin class into the student class and just added a boolean to check whether the user is a student or teacher. We didn't add any module functionality, but it would not be hard to implement. We did not add a weather connection, because that seemed a little over the top, but is also something you could do without too much trouble.
 
 
-
+This project was created by Adam Moran and Jack Rotta. This project is licensed under the terms of the MIT license.
 
 ************** Attendance Application ******************
 
