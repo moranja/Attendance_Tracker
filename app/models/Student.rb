@@ -55,7 +55,8 @@ class Student < ActiveRecord::Base
     if late_students != []
       puts "Here's who was late today:"
       puts late_students
-    elsif absent_students != []
+    end
+    if absent_students != []
       puts "Here's who is absent today:"
       puts absent_students
     end
@@ -64,17 +65,17 @@ class Student < ActiveRecord::Base
   def change_arrival_time(hh_mm)
     new_time_array = (hh_mm.split("-") << '00')
     new_time = new_time_array.join('-')
-    if new_time_array[0].to_i.digits.count != 2 && new_time_array[1].to_i.digits.count != 2
-      puts "Arrival time not updated, please enter the new arrival time in correct format!"
-    else
+    if (0..23).to_a.include?(new_time_array[0].to_i) && (0..59).to_a.include?(new_time_array[0].to_i)
+      #(new_time_array[0].to_i.digits.count == 1 || new_time_array[0].to_i.digits.count == 2) && (new_time_array[1].to_i.digits.count == 1 && new_time_array[1].to_i.digits.count == 2)
       todays_attendance = self.attendances.last
       todays_attendance.update(arrival_time: School_Day.current_day(new_time, todays_attendance).in_time_zone("Central Time (US & Canada)"), manually_changed: true)
       todays_attendance.is_early_or_late
+    else
+      puts "Arrival time not updated, please enter the new arrival time in correct format!"
     end
   end
 
   def self.create_student_or_teacher(deets, teacher)
-    binding.pry
     teacher_boolean = false if teacher == 'student'
     teacher_boolean = true if teacher == 'teacher'
     deets_array = deets.split(', ')
