@@ -14,13 +14,14 @@ class Student < ActiveRecord::Base
   def check_my_attendance (num_of_days)
     if num_of_days.to_i == 0
     else
+      total_days_checked = 0
       how_early = 0
       self.attendances.last(num_of_days.to_i).each do |att|
         puts "On #{att.arrival_time.to_date} you got here at #{att.arrival_time.to_time.strftime("%H:%M")}."
         how_early += att.seconds_early
+        total_days_checked += 1
       end
-      binding.pry
-      how_early /= num_of_days.to_i
+      how_early /= total_days_checked
       if how_early > 600
         puts "Great job, early bird!"
       elsif how_early < 0
@@ -61,8 +62,9 @@ class Student < ActiveRecord::Base
   end
 
   def change_arrival_time(hh_mm)
-    new_time = (hh_mm.split("-") << '00').join('-')
-    if new_time[0].to_i.digits.count != 2 && new_time[1].to_i.digits.count != 2
+    new_time_array = (hh_mm.split("-") << '00')
+    new_time = new_time_array.join('-')
+    if new_time_array[0].to_i.digits.count != 2 && new_time_array[1].to_i.digits.count != 2
       puts "Arrival time not updated, please enter the new arrival time in correct format!"
     else
       todays_attendance = self.attendances.last

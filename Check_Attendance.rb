@@ -99,4 +99,4 @@ clear_logs && greet_student(current_student)
 menu(current_student)
 
 
-Pry.start
+#Pry.start
