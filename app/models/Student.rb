@@ -65,11 +65,12 @@ class Student < ActiveRecord::Base
   def change_arrival_time(hh_mm)
     new_time_array = (hh_mm.split("-") << '00')
     new_time = new_time_array.join('-')
-    if (0..23).to_a.include?(new_time_array[0].to_i) && (0..59).to_a.include?(new_time_array[0].to_i)
-      #(new_time_array[0].to_i.digits.count == 1 || new_time_array[0].to_i.digits.count == 2) && (new_time_array[1].to_i.digits.count == 1 && new_time_array[1].to_i.digits.count == 2)
-      todays_attendance = self.attendances.last
-      todays_attendance.update(arrival_time: School_Day.current_day(new_time, todays_attendance).in_time_zone("Central Time (US & Canada)"), manually_changed: true)
-      todays_attendance.is_early_or_late
+    last_attendance = self.attendances.last
+    if last_attendance.arrival_time.to_date.today? == false || nil
+      puts "You haven't logged your attendance yet today! Please do that first before trying to change your arrival time."
+    elsif (0..23).to_a.include?(new_time_array[0].to_i) && (0..59).to_a.include?(new_time_array[0].to_i)
+      last_attendance.update(arrival_time: School_Day.current_day(new_time, last_attendance).in_time_zone("Central Time (US & Canada)"), manually_changed: true)
+      last_attendance.is_early_or_late
     else
       puts "Arrival time not updated, please enter the new arrival time in correct format!"
     end
